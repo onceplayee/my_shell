@@ -242,32 +242,3 @@ manage_language
 # 输出系统初始化完成
 echo_green "系统初始化完成"
 systemctl enable --now sshd
-# 循环等待用户选择操作
-#while true;do
-#echo_yellow "请选择一个操作："
-#echo_yellow "关机 : 1"
-#echo_yellow "重启 : 2"
-#echo_yellow "退出 : 3"
-
-# 读取用户输入
-#read -p "请输入您的选择: " choice
-#case $choice in
-#    1)
-#        echo_green "正在执行关机操作..."
-#        init 0 &>/dev/null
-#        ;;
-#    2)
-#        echo_green "正在执行重启操作..."
-#        reboot &>/dev/null
-#        ;;
-#    3)
-#        echo_green "脚本执行完毕，退出中..."
-#	# 重启sshd服务
-#	systemctl restart sshd &>/dev/null
-#        exit 0 &>/dev/null
-#        ;;
-#    *)
-#        echo_red "无效的输入"
-#        ;;
-#esac
-#done
