@@ -17,25 +17,17 @@ host=$(hostname -I | awk '{print $1}')
 gateway=$(ip route | head -n1 | awk '{print $3}')
 
 # 循环遍历子网地址
-for i in $(seq 1 254); do
+for i in $(seq 11 254); do
     {
+    if [ $i -eq 36 ];then
+    continue
+    fi
 # 构造IP地址
     ip=$subnet$i
         # 使用ping命令检测IP地址是否可达
     if ping -c 1 -W 1 $ip &> /dev/null; then
 
 #循环执行ssh-copy-id命令，将公钥复制到目标主机
-	if [ "$ip" == "$host" ];then
-		continue
-	fi
-
-	if [ "$ip" == "$gateway" ];then
-		continue
-	fi
-	
-	if [ "$ip" == "192.168.44.10" ];then
-		continue
-	fi
 /usr/bin/expect << EOF &> /dev/null
 set timeout 10
 spawn ssh-copy-id root@$ip
@@ -46,20 +38,21 @@ send "561300\n"
 expect EOF
 EOF
 # 检查ssh-copy-id命令是否执行成功
-	if [ $? -ne 0 ];then
-		echo "$ip 执行失败"
-		continue
-	fi
-		scp /root/CENTOS7系统初始化脚本.sh root@$ip:/root/
-	if [ $? -ne 0 ];then
-		echo "复制脚本失败"
-	else
-		ssh root@$ip bash /root/CENTOS7系统初始化脚本.sh &>/var/log系统初始化.log
-		if [ $? -eq 0 ];then
-			echo "${ip}初始化成功"
-		fi
-	fi
+        if [ $? -ne 0 ];then
+                echo "$ip 执行失败"
+                continue
+        fi
+                scp /root/INIT.sh root@$ip:/root/ &>/dev/null
+        if [ $? -ne 0 ];then
+                echo "复制脚本失败"
+        else
+                echo "正在初始化${ip}"
+                ssh root@$ip bash /root/INIT.sh &>/var/sysinit.log
+                if [ $? -eq 0 ];then
+                        echo "${ip}初始化成功"
+                fi
+        fi
 fi
     }&
-done				  
+done
 wait
