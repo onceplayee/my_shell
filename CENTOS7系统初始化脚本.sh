@@ -192,14 +192,14 @@ manage_ntpdate(){
     	ntpdate pool.ntp.org &>/dev/null
 	# 启动ntpd服务
 	systemctl enable --now ntpd &>/dev/null
-	echo_green "时间同步完成。当前系统时间为$(date)"    
+	echo_green "时间同步完成。当前系统时间为$(date +%F_%T)"    
     # 同步时间
     else
         ntpdate pool.ntp.org &>/dev/null
 	if [ $? -eq 0 ];then
     	    # 启动ntpd服务
     	    systemctl enable --now ntpd &>/dev/null
-	    echo_green "时间同步完成。当前系统时间为$(date)"
+	    echo_green "时间同步完成。当前系统时间为$(date +%F_%T)"
 	else 
 	    echo_red "时间同步失败"	
 	fi
