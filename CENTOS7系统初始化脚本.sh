@@ -168,7 +168,7 @@ else
 fi
 
 # 安装常用软件
-PACKAGES="lrzsz ntpdate ntp git elinks lftp lvm2 sysstat net-tools wget vim bash-completion dos2unix tree psmisc chrony rsync lsof"
+PACKAGES="lrzsz cowsay ntpdate ntp git elinks lftp lvm2 sysstat net-tools wget vim bash-completion dos2unix tree psmisc chrony rsync lsof"
 echo_yellow "正在安装常用软件..."
 yum -y install $PACKAGES &>/dev/null
 
